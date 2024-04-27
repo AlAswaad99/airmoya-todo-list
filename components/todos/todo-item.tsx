@@ -1,7 +1,7 @@
 "use client"
 import { Todo } from "@/types"
 import { Button } from "../ui/button"
-import { Check, Pencil, Trash } from "lucide-react"
+import { Check, Pencil, Timer, Trash } from "lucide-react"
 import { useState } from "react"
 import { useTodos } from "@/hooks/use-todos"
 import { AlertModal } from "./alert-modal"
@@ -37,16 +37,16 @@ export const TodoItem: React.FC<TodoItemProps> = ({ todo }) => {
     }
   }
 
-  const handleChange = (newTodo: Todo) => {
+  const handleChange = (newTodo: Todo, status: "COMPLETED" | "IN-PROGRESS" | "TODO") => {
     setDone((prev) => !prev)
-    if (todo.done) {
-      toast.success("Todo undone")
-    } else {
-      toast.success("Todo done")
-    }
+    // if (todo.done === "") {
+    //   toast.success("Todo undone")
+    // } else {
+    toast.success("Update Todo")
+    // }
     setTodos(
       todos.map((todo) =>
-        todo.id === newTodo.id ? { ...todo, done: !todo.done } : todo
+        todo.id === newTodo.id ? { ...todo, done: status } : todo
       )
     )
   }
@@ -61,48 +61,67 @@ export const TodoItem: React.FC<TodoItemProps> = ({ todo }) => {
       <div
         className={cn(
           "flex  gap-2 bg-white p-4 rounded-md border",
-          todo.done && "bg-teal-50"
+          todo.done === "COMPLETED" && "bg-teal-50",
+          todo.done === "IN-PROGRESS" && "bg-yellow-50"
         )}
       >
-        <Button
-          onClick={() => handleChange(todo)}
-          size="icon"
-          variant="outline"
-          className={cn(
-            todo.done &&
-              "bg-teal-500 text-white hover:bg-teal-600 hover:text-white"
-          )}
-        >
-          <Check className="w-4 h-4" />
-        </Button>
+
         <div>
-          <h4
-            className={cn(
-              "text-xl font-semibold tracking-tight",
-              todo.done && "line-through"
-            )}
-          >
-            {todo.title}
-          </h4>
-          <p className=" font-semibold tracking-tight">{todo.description}</p>
+          <div className="flex items-center">
+            <h4
+              className={cn(
+                "font-medium tracking-tight",
+                todo.done === "COMPLETED" && "line-through"
+              )}
+            >
+              {todo.title}
+            </h4>
+            <Button
+              onClick={() => {
+                setTodo(todo)
+                todoModal.onOpen()
+              }}
+              variant="ghost"
+              size="sm"
+              className="bg-transparent hover:bg-transparent"
+            >
+              <Pencil className="w-4 h-4" />
+            </Button>
+          </div>
+
+          <p className="text-sm text-muted-foreground">{todo.description}</p>
         </div>
-        <div className="flex flex-col gap-2 ml-auto">
+
+        <div className="flex flex-row-reverse gap-2 ml-auto">
           <Button
             onClick={() => setOpen(true)}
-            variant="destructive"
+            variant="outline"
             size="icon"
           >
             <Trash className="w-4 h-4" />
           </Button>
+
           <Button
-            onClick={() => {
-              setTodo(todo)
-              todoModal.onOpen()
-            }}
+            onClick={() => handleChange(todo, "IN-PROGRESS")}
             variant="outline"
             size="icon"
+            className={cn(
+              todo.done === "IN-PROGRESS" &&
+              "bg-yellow-500 text-white hover:bg-yellow-600 hover:text-white"
+            )}
           >
-            <Pencil className="w-4 h-4" />
+            <Timer className="w-4 h-4" />
+          </Button>
+          <Button
+            onClick={() => handleChange(todo, "COMPLETED")}
+            size="icon"
+            variant="outline"
+            className={cn(
+              todo.done === "COMPLETED" &&
+              "bg-teal-500 text-white hover:bg-teal-600 hover:text-white"
+            )}
+          >
+            <Check className="w-4 h-4" />
           </Button>
         </div>
       </div>

@@ -7,6 +7,13 @@ interface TodoStore {
 }
 
 export const useTodos = create<TodoStore>((set) => ({
-  todos: [],
+  todos: [
+    {
+      id: 1,
+      title: "string",
+      description: "string",
+      done: "TODO"
+    }
+  ],
   setTodos: (todos) => set({ todos }),
 }))
