@@ -1,15 +1,18 @@
-import { useTodos } from "@/hooks/use-todos"
-import { TodoItem } from "./todo-item"
+import { useTodos } from "@/hooks/use-todos";
+import { TodoItem } from "./todo-item";
 
 export const TodoList = () => {
-  const todos = useTodos((state) => state.todos)
+  const { filteredTodos, isLoading, fetchTodos } = useTodos();
+
 
   return (
-    <div className="flex flex-col gap-4 mt-10 pt-10">
-      {todos.length === 0 && <div className="flex justify-center my-12">No Todos</div>}
-      {todos.map((todo) => (
-        <TodoItem key={todo.id} todo={todo} />
+    <div className="flex flex-col gap-4">
+      {(!filteredTodos || (filteredTodos && filteredTodos.length === 0)) && (
+        <div className="flex justify-center my-12">No Todos</div>
+      )}
+      {filteredTodos && filteredTodos.map((todo) => (
+        <TodoItem key={todo._id} todo={todo} />
       ))}
     </div>
-  )
-}
+  );
+};

@@ -1,13 +1,12 @@
 "use client"
-import * as z from "zod"
 import { zodResolver } from "@hookform/resolvers/zod"
+import * as z from "zod"
 
 import { useTodoModal } from "@/hooks/use-todo-modal"
 import { useTodos } from "@/hooks/use-todos"
-import { Todo } from "@/types/types"
+import { ITodo } from "@/types/types"
 
-import { Modal } from "@/components/ui/modal"
-import { useForm } from "react-hook-form"
+import { Button } from "@/components/ui/button"
 import {
   Form,
   FormControl,
@@ -15,11 +14,12 @@ import {
   FormItem,
   FormMessage,
 } from "@/components/ui/form"
-import { Label } from "@/components/ui/label"
 import { Input } from "@/components/ui/input"
-import { Button } from "@/components/ui/button"
+import { Label } from "@/components/ui/label"
+import { Modal } from "@/components/ui/modal"
 import { useSelectedTodo } from "@/hooks/use-selected-todo"
 import { useEffect } from "react"
+import { useForm } from "react-hook-form"
 import { toast } from "sonner"
 
 let nextId = 0
@@ -30,13 +30,14 @@ const formSchema = z.object({
 })
 
 interface AddTodoFormProps {
-  initialData: Todo | null
+  initialData: ITodo | null
 }
 
 const AddTodoForm: React.FC<AddTodoFormProps> = ({ initialData }) => {
+  const { todos, isLoading, fetchTodos, addTodo, deleteTodo, updateTodo } = useTodos();
   const todoModal = useTodoModal()
-  const setTodos = useTodos((state) => state.setTodos)
-  const todos = useTodos((state) => state.todos)
+  // const setTodos = useTodos((state) => state.setTodos)
+  // const todos = useTodos((state) => state.todos)
   const setTodo = useSelectedTodo((state) => state.setTodo)
   const selectedTodo = useSelectedTodo((state) => state.todo)
 
@@ -59,22 +60,22 @@ const AddTodoForm: React.FC<AddTodoFormProps> = ({ initialData }) => {
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     if (initialData) {
-      const updatedTodos = todos.map((todo) =>
-        todo.id === initialData.id ? { ...todo, ...values } : todo
-      )
+      // const updatedTodos = todos.map((todo) =>
+      //   todo.id === initialData.id ? { ...todo, ...values } : todo
+      // )
 
-      setTodos(updatedTodos)
-
+      // setTodos(updatedTodos)
+      updateTodo(initialData._id!, {...initialData, ...values});
       todoModal.onClose()
       setTodo(null)
     } else {
-      const newTodo:Todo = {
+      const newTodo:ITodo = {
         ...values,
-        id: nextId++,
         done: "TODO",
       }
 
-      setTodos([...todos, newTodo])
+      // setTodos([...todos, newTodo])
+      addTodo(newTodo)
       form.reset()
       todoModal.onClose()
     }
@@ -121,7 +122,7 @@ const AddTodoForm: React.FC<AddTodoFormProps> = ({ initialData }) => {
               <FormItem>
                 <Label>Description</Label>
                 <FormControl>
-                  <Input placeholder="Todo Description" {...field} />
+                  <Input required={false} placeholder="Todo Description" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>

@@ -1,43 +1,41 @@
 "use client"
-import { Todo } from "@/types/types"
-import { Button } from "../ui/button"
-import { Check, MoreVertical, Pencil, Timer, Trash } from "lucide-react"
-import { useState } from "react"
-import { useTodos } from "@/hooks/use-todos"
-import { AlertModal } from "./alert-modal"
 import { useSelectedTodo } from "@/hooks/use-selected-todo"
 import { useTodoModal } from "@/hooks/use-todo-modal"
+import { useTodos } from "@/hooks/use-todos"
 import { cn } from "@/lib/utils"
+import { ITodo } from "@/types/types"
+import { Check, MoreVertical, Pencil, Timer, Trash } from "lucide-react"
+import { useState } from "react"
 import { toast } from "sonner"
+import { Button } from "../ui/button"
+import { AlertModal } from "./alert-modal"
 
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
+  DropdownMenuTrigger
 } from "@/components/ui/dropdown-menu"
 
 
 interface TodoItemProps {
-  todo: Todo
+  todo: ITodo
 }
 
 export const TodoItem: React.FC<TodoItemProps> = ({ todo }) => {
   const [open, setOpen] = useState(false)
   const [loading, setLoading] = useState(false)
-  const todos = useTodos((state) => state.todos)
-  const setTodos = useTodos((state) => state.setTodos)
   const [done, setDone] = useState(false)
+  const { todos, isLoading, fetchTodos, addTodo, deleteTodo, updateTodo } = useTodos();
 
   const setTodo = useSelectedTodo((state) => state.setTodo)
   const todoModal = useTodoModal()
 
-  const onDeleteTodo = async (todoId: number) => {
+  const onDeleteTodo = async (todoId: string) => {
     try {
       setLoading(true)
-      setTodos(todos.filter((todo) => todo.id !== todoId))
+      // setTodos(todos.filter((todo) => todo._id !== todoId))
+      deleteTodo(todoId);
       toast("Todo Deleted")
     } catch (error) {
       toast.error("Something Went Wrong")
@@ -47,18 +45,19 @@ export const TodoItem: React.FC<TodoItemProps> = ({ todo }) => {
     }
   }
 
-  const handleChange = (newTodo: Todo, status: "COMPLETED" | "IN-PROGRESS" | "TODO") => {
+  const handleChange = (newTodo: ITodo, status: "COMPLETED" | "IN-PROGRESS" | "TODO") => {
     setDone((prev) => !prev)
     // if (todo.done === "") {
     //  toast("Todo undone")
     // } else {
     toast("Update Todo")
     // }
-    setTodos(
-      todos.map((todo) =>
-        todo.id === newTodo.id ? { ...todo, done: todo.done === status ? "TODO" : status } : todo
-      )
-    )
+    updateTodo(newTodo._id!, { ...newTodo, done: todo.done === status ? "TODO" : status })
+    // setTodos(
+    //   todos.map((todo) =>
+    //     todo._id === newTodo._id ? { ...todo, done: todo.done === status ? "TODO" : status } : todo
+    //   )
+    // )
   }
   return (
     <>
@@ -66,7 +65,7 @@ export const TodoItem: React.FC<TodoItemProps> = ({ todo }) => {
         open={open}
         onClose={() => setOpen(false)}
         disabled={loading}
-        onConfirm={() => onDeleteTodo(todo.id)}
+        onConfirm={() => onDeleteTodo(todo._id!)}
       />
       <div
         className={cn(
