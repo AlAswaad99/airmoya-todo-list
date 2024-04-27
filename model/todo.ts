@@ -1,0 +1,14 @@
+// models/todo.js
+
+import mongoose from 'mongoose';
+
+const todoSchema = new mongoose.Schema({
+  id: { type: Number, required: true },
+  title: { type: String, required: true },
+  description: { type: String, required: true },
+  done: { type: String, enum: ['TODO', 'COMPLETED', 'IN-PROGRESS'], required: true }
+});
+
+const TodoModel = mongoose.models.Todo || mongoose.model('Todo', todoSchema);
+
+export default TodoModel;

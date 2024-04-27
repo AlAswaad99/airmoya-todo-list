@@ -4,7 +4,7 @@ import { zodResolver } from "@hookform/resolvers/zod"
 
 import { useTodoModal } from "@/hooks/use-todo-modal"
 import { useTodos } from "@/hooks/use-todos"
-import { Todo } from "@/types"
+import { Todo } from "@/types/types"
 
 import { Modal } from "@/components/ui/modal"
 import { useForm } from "react-hook-form"

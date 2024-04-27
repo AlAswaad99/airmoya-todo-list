@@ -1,5 +1,5 @@
 "use client"
-import { Todo } from "@/types"
+import { Todo } from "@/types/types"
 import { Button } from "../ui/button"
 import { Check, MoreVertical, Pencil, Timer, Trash } from "lucide-react"
 import { useState } from "react"

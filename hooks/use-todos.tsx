@@ -1,5 +1,5 @@
 import { create } from "zustand"
-import { Todo } from "@/types"
+import { Todo } from "@/types/types"
 
 interface TodoStore {
   todos: Todo[]
