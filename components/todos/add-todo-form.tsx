@@ -20,7 +20,7 @@ import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import { useSelectedTodo } from "@/hooks/use-selected-todo"
 import { useEffect } from "react"
-import toast from "react-hot-toast"
+import { toast } from "sonner"
 
 let nextId = 0
 
@@ -68,17 +68,17 @@ const AddTodoForm: React.FC<AddTodoFormProps> = ({ initialData }) => {
       todoModal.onClose()
       setTodo(null)
     } else {
-      const newTodo = {
+      const newTodo:Todo = {
         ...values,
         id: nextId++,
-        done: false,
+        done: "TODO",
       }
 
       setTodos([...todos, newTodo])
       form.reset()
       todoModal.onClose()
     }
-    toast.success(toastMessage)
+   toast(toastMessage)
   }
 
   useEffect(() => {

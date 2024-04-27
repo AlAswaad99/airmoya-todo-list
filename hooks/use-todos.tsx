@@ -11,7 +11,7 @@ export const useTodos = create<TodoStore>((set) => ({
     {
       id: 1,
       title: "string",
-      description: "string",
+      description: "string adfads fadsf ads fads fsadf dsafadsfasdf sadfasdf dsa fads fadsfasdf sadf",
       done: "TODO"
     }
   ],

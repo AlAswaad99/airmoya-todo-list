@@ -1,14 +1,24 @@
 "use client"
 import { Todo } from "@/types"
 import { Button } from "../ui/button"
-import { Check, Pencil, Timer, Trash } from "lucide-react"
+import { Check, MoreVertical, Pencil, Timer, Trash } from "lucide-react"
 import { useState } from "react"
 import { useTodos } from "@/hooks/use-todos"
 import { AlertModal } from "./alert-modal"
 import { useSelectedTodo } from "@/hooks/use-selected-todo"
 import { useTodoModal } from "@/hooks/use-todo-modal"
 import { cn } from "@/lib/utils"
-import toast from "react-hot-toast"
+import { toast } from "sonner"
+
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"
+
 
 interface TodoItemProps {
   todo: Todo
@@ -28,7 +38,7 @@ export const TodoItem: React.FC<TodoItemProps> = ({ todo }) => {
     try {
       setLoading(true)
       setTodos(todos.filter((todo) => todo.id !== todoId))
-      toast.success("Todo Deleted")
+      toast("Todo Deleted")
     } catch (error) {
       toast.error("Something Went Wrong")
     } finally {
@@ -40,13 +50,13 @@ export const TodoItem: React.FC<TodoItemProps> = ({ todo }) => {
   const handleChange = (newTodo: Todo, status: "COMPLETED" | "IN-PROGRESS" | "TODO") => {
     setDone((prev) => !prev)
     // if (todo.done === "") {
-    //   toast.success("Todo undone")
+    //  toast("Todo undone")
     // } else {
-    toast.success("Update Todo")
+    toast("Update Todo")
     // }
     setTodos(
       todos.map((todo) =>
-        todo.id === newTodo.id ? { ...todo, done: status } : todo
+        todo.id === newTodo.id ? { ...todo, done: todo.done === status ? "TODO" : status } : todo
       )
     )
   }
@@ -60,13 +70,13 @@ export const TodoItem: React.FC<TodoItemProps> = ({ todo }) => {
       />
       <div
         className={cn(
-          "flex  gap-2 bg-white p-4 rounded-md border",
+          "flex items-center gap-2 bg-white py-2 px-4 rounded-md border",
           todo.done === "COMPLETED" && "bg-teal-50",
           todo.done === "IN-PROGRESS" && "bg-yellow-50"
         )}
       >
 
-        <div>
+        <div className="w-full">
           <div className="flex items-center">
             <h4
               className={cn(
@@ -83,7 +93,7 @@ export const TodoItem: React.FC<TodoItemProps> = ({ todo }) => {
               }}
               variant="ghost"
               size="sm"
-              className="bg-transparent hover:bg-transparent"
+              className="hidden md:flex bg-transparent hover:bg-transparent"
             >
               <Pencil className="w-4 h-4" />
             </Button>
@@ -92,7 +102,7 @@ export const TodoItem: React.FC<TodoItemProps> = ({ todo }) => {
           <p className="text-sm text-muted-foreground">{todo.description}</p>
         </div>
 
-        <div className="flex flex-row-reverse gap-2 ml-auto">
+        <div className="hidden md:flex flex-row-reverse gap-2 ml-auto">
           <Button
             onClick={() => setOpen(true)}
             variant="outline"
@@ -123,6 +133,46 @@ export const TodoItem: React.FC<TodoItemProps> = ({ todo }) => {
           >
             <Check className="w-4 h-4" />
           </Button>
+        </div>
+        <div className="md:hidden">
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="ghost" size="icon">
+                <MoreVertical className="h-4 w-4" />
+                <span className="sr-only">More</span>
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end">
+              <DropdownMenuItem onClick={() => handleChange(todo, "COMPLETED")}>
+                <div className="flex items-center gap-2">
+                  <Check className="w-4 h-4" />
+                  <p>{todo.done !== "COMPLETED" ? "Mark as Completed" : "Unmark as Todo"}</p>
+                </div>
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={() => handleChange(todo, "IN-PROGRESS")}>
+                <div className="flex items-center gap-2">
+                  <Timer className="w-4 h-4" />
+                  <p>{todo.done !== "IN-PROGRESS" ? "Mark as In-Progress" : "Unmark as Todo"}</p>
+                </div>
+              </DropdownMenuItem>
+              <DropdownMenuItem
+                onClick={() => {
+                  setTodo(todo)
+                  todoModal.onOpen()
+                }}>
+                <div className="flex items-center gap-2">
+                  <Pencil className="w-4 h-4" />
+                  <p>Edit</p>
+                </div>
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={() => setOpen(true)}>
+                <div className="flex items-center gap-2">
+                  <Trash className="w-4 h-4" />
+                  <p>Remove</p>
+                </div>
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
         </div>
       </div>
     </>

@@ -21,9 +21,9 @@ export const TodoApp = () => {
 
       <Card className="col-span-7">
         <CardHeader>
-          <CardTitle>Recent Sales</CardTitle>
+          <CardTitle>Todo List</CardTitle>
           <CardDescription>
-            You made 265 sales this month.
+            A list of all your todos
           </CardDescription>
         </CardHeader>
         <CardContent>
