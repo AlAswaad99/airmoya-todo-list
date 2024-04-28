@@ -21,12 +21,13 @@ import { useSelectedTodo } from "@/hooks/use-selected-todo"
 import { useEffect } from "react"
 import { useForm } from "react-hook-form"
 import { toast } from "sonner"
+import { Textarea } from "@/components/ui/textarea"
 
 let nextId = 0
 
 const formSchema = z.object({
   title: z.string().min(1, "Title is Required"),
-  description: z.string().min(1, "Description is Required"),
+  description: z.string(),
 })
 
 interface AddTodoFormProps {
@@ -122,7 +123,9 @@ const AddTodoForm: React.FC<AddTodoFormProps> = ({ initialData }) => {
               <FormItem>
                 <Label>Description</Label>
                 <FormControl>
-                  <Input required={false} placeholder="Todo Description" {...field} />
+                <Textarea defa placeholder="Todo Description" {...field}/>
+
+                  {/* <Input required={false} placeholder="Todo Description" {...field} /> */}
                 </FormControl>
                 <FormMessage />
               </FormItem>

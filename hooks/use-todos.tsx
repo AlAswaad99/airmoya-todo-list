@@ -1,6 +1,7 @@
 import { ITodo } from "@/types/types";
 import axios from "axios";
 import { create } from "zustand";
+import { toast } from "sonner"
 
 interface TodoStore {
   todos: ITodo[];
@@ -36,29 +37,29 @@ function calculateAnalytics(todos: ITodo[]) {
       todos.length === 0
         ? 0
         : Math.ceil(
-            (todos.filter((todo) => todo.done === "COMPLETED").length /
-              todos.length) *
-              100
-          ),
+          (todos.filter((todo) => todo.done === "COMPLETED").length /
+            todos.length) *
+          100
+        ),
     inProgressAmount: todos.filter((todo) => todo.done === "IN-PROGRESS")
       .length,
     inProgressPercent:
       todos.length === 0
         ? 0
         : Math.ceil(
-            (todos.filter((todo) => todo.done === "IN-PROGRESS").length /
-              todos.length) *
-              100
-          ),
+          (todos.filter((todo) => todo.done === "IN-PROGRESS").length /
+            todos.length) *
+          100
+        ),
     tododAmount: todos.filter((todo) => todo.done === "TODO").length,
     tododPercent:
       todos.length === 0
         ? 0
         : Math.floor(
-            (todos.filter((todo) => todo.done === "TODO").length /
-              todos.length) *
-              100
-          ),
+          (todos.filter((todo) => todo.done === "TODO").length /
+            todos.length) *
+          100
+        ),
   };
 }
 
@@ -66,7 +67,7 @@ export const useTodos = create<TodoStore>((set, get) => ({
   todos: [],
   filteredTodos: [],
   selectedFilter: "ALL",
-  isLoading: false,
+  isLoading: true,
   analytics: {
     allAmount: 0,
     allPercent: 0,
@@ -134,6 +135,7 @@ export const useTodos = create<TodoStore>((set, get) => ({
       }));
     } catch (e) {
       console.log("error during GET", e);
+      toast.error("Something wend wrong!")
       set({
         isLoading: false,
         analytics: calculateAnalytics(get().todos),
@@ -147,19 +149,24 @@ export const useTodos = create<TodoStore>((set, get) => ({
         method: "POST",
         data: todo,
       });
-      set((state) => ({
-        todos: [...state.todos, todo],
-        filteredTodos:
-          state.selectedFilter === "ALL" || state.selectedFilter === "TODO"
-            ? [...state.todos, todo]
-            : state.todos,
-        isLoading: false,
-      }));
-      set((state) => ({
-        analytics: calculateAnalytics(state.todos),
-      }));
+      if (result.data.title === todo.title) {
+        set((state) => ({
+          todos: [...state.todos, result.data],
+          filteredTodos:
+            state.selectedFilter === "ALL" || state.selectedFilter === "TODO"
+              ? [...state.todos, result.data]
+              : state.todos,
+          isLoading: false,
+        }));
+        set((state) => ({
+          analytics: calculateAnalytics(state.todos),
+        }));
+      }
+
     } catch (e) {
       console.log("error during POST", e);
+      toast.error("Something wend wrong!")
+
       set({
         isLoading: false,
         analytics: calculateAnalytics(get().todos),
@@ -187,6 +194,8 @@ export const useTodos = create<TodoStore>((set, get) => ({
       }));
     } catch (e) {
       console.log("error during PUT", e);
+      toast.error("Something wend wrong!")
+
       set({
         isLoading: false,
         analytics: calculateAnalytics(get().todos),
@@ -210,6 +219,8 @@ export const useTodos = create<TodoStore>((set, get) => ({
       }));
     } catch (e) {
       console.log("error during DELETE", e);
+      toast.error("Something wend wrong!")
+
       set({
         isLoading: false,
         analytics: calculateAnalytics(get().todos),

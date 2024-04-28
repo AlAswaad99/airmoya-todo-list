@@ -8,7 +8,7 @@ export const TodoList = () => {
   return (
     <div className="flex flex-col gap-4">
       {(!filteredTodos || (filteredTodos && filteredTodos.length === 0)) && (
-        <div className="flex justify-center my-12">No Todos</div>
+        <div className="flex justify-center my-12">{isLoading ? "Loading..." : "+ Add Todos"}</div>
       )}
       {filteredTodos && filteredTodos.map((todo) => (
         <TodoItem key={todo._id} todo={todo} />

@@ -4,7 +4,7 @@ import mongoose from 'mongoose';
 
 const todoSchema = new mongoose.Schema({
   title: { type: String, required: true },
-  description: { type: String, required: true },
+  description: { type: String, default: "" },
   done: { type: String, enum: ['TODO', 'COMPLETED', 'IN-PROGRESS'], required: true }
 });
 
