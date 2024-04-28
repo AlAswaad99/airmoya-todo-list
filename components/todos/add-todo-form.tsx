@@ -123,7 +123,7 @@ const AddTodoForm: React.FC<AddTodoFormProps> = ({ initialData }) => {
               <FormItem>
                 <Label>Description</Label>
                 <FormControl>
-                <Textarea defa placeholder="Todo Description" {...field}/>
+                <Textarea placeholder="Todo Description" {...field}/>
 
                   {/* <Input required={false} placeholder="Todo Description" {...field} /> */}
                 </FormControl>
