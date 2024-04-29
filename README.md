@@ -4,6 +4,10 @@ Welcome to the documentation for Airmoya Todo List application built using Next.
 
 ## Overview 
 Airmoya Todo List app allows users to manage their tasks efficiently. It provides features to add, edit, delete, and mark tasks as completed. 
+![Screenshot 1](screenshots/Screenshot 2024-04-29 114830.png)
+![Screenshot 2](screenshots/Screenshot 2024-04-29 114851.png)
+![Screenshot 3](screenshots/Screenshot 2024-04-29 114919.png)
+
 
 ## Table of Contents  
 - [Getting Started](#getting-started) 
