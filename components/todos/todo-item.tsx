@@ -16,6 +16,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger
 } from "@/components/ui/dropdown-menu"
+import { StatusChip } from "./todo-status-chip"
 
 
 interface TodoItemProps {
@@ -92,12 +93,16 @@ export const TodoItem: React.FC<TodoItemProps> = ({ todo }) => {
               }}
               variant="ghost"
               size="sm"
-              className="hidden md:flex bg-transparent hover:bg-transparent"
+              className="hidden md:flex bg-transparent hover:bg-transparent h-4"
             >
               <Pencil className="w-4 h-4" />
             </Button>
-          </div>
+            <div className="md:ml-0 ml-2">
+              <StatusChip status={todo.done} />
 
+            </div>
+
+          </div>
           <p className="text-sm text-muted-foreground">{todo.description}</p>
         </div>
 

@@ -1,6 +1,6 @@
 import TodoStatusCards from "@/components/dashboard/todo-status-app"
 import { TodoApp } from "@/components/todos/todo-app"
-import { Separator } from "@/components/ui/separator"
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 
 export default function Home() {
   return (
@@ -11,12 +11,25 @@ export default function Home() {
             <h4 className="font-semibold text-3xl">Dashboard</h4>
             <TodoStatusCards />
           </div>
-          {/* <Separator /> */}
           <TodoApp />
         </div>
       </div>
       <div className="flex flex-col md:hidden">
-        <TodoApp />
+        <Tabs defaultValue="todos">
+          <TabsList className="grid w-full grid-cols-2">
+            <TabsTrigger value="todos">Todos</TabsTrigger>
+            <TabsTrigger value="dashboard">Dashboard</TabsTrigger>
+          </TabsList>
+          <TabsContent value="todos"><TodoApp /></TabsContent>
+          <TabsContent value="dashboard">
+            <div className="space-y-2">
+              <h4 className="font-semibold text-3xl">Dashboard</h4>
+              <TodoStatusCards />
+            </div>
+          </TabsContent>
+        </Tabs>
+
+
       </div>
     </div>
   )
