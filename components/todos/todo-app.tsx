@@ -11,7 +11,7 @@ import { useSelectedTodo } from "@/hooks/use-selected-todo";
 import { useTodos } from "@/hooks/use-todos";
 import { useEffect } from "react";
 import { AddTodoForm } from "./add-todo-form";
-import { TodoClient } from "./client";
+import { TodoClient } from "./todo-client";
 import { TodoList } from "./todo-list";
 
 export const TodoApp = () => {
