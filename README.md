@@ -11,7 +11,8 @@ Airmoya Todo List app allows users to manage their tasks efficiently. It provide
 
 ## Table of Contents  
 - [Getting Started](#getting-started) 
-- [Features](#features) 
+- [Features](#features)
+- [Architectural Overview](#architectural-overview) 
 - [Folder Structure](#folder-structure) 
 - [Dependencies](#dependencies) 
 - [Deployment](#deployment) 
@@ -36,8 +37,60 @@ To get started with the Todo List app, follow these steps:
 
 5. Open your browser and visit `http://localhost:3000` to view the app.
 
-## Features
 
+
+## Architectural Overview
+
+Airmoya Todo List application, built using Next.js and MongoDB, follows a clear path for handling requests and responses. Below is an architectural overview outlining the flow of data through the application:
+
+### Frontend to Backend Communication
+
+1. **User Interaction:** 
+   - Users interact with the frontend interface, where they can view, add, edit, delete, and mark todos as completed/in-progress.
+   - These interactions trigger HTTP requests to the backend API endpoints.
+
+2. **API Requests:** 
+   - When a user performs an action (e.g., adding a todo), the frontend sends an HTTP request to the appropriate API endpoint.
+   - The request contains relevant data, such as the todo title, description, and action type.
+
+3. **Backend Routing:**
+   - Next.js API routes handle incoming requests based on their endpoints.
+   - Each API route corresponds to a specific CRUD operation (e.g., GET /api/todos, POST /api/todos).
+
+4. **Request Processing:**
+   - Upon receiving a request, the backend processes the data and performs the necessary operations (e.g., database CRUD operations for todos).
+
+### Backend to Database Interaction
+
+1. **Data Manipulation:**
+   - Backend API routes interact with the MongoDB database to perform CRUD operations on todos.
+   - For example, when adding a new todo, the backend inserts the todo data into the MongoDB collection.
+
+2. **Database Queries:**
+   - MongoDB queries are executed to retrieve, update, delete, or insert todo data based on the request received from the frontend.
+
+3. **Data Validation and Error Handling:**
+   - Before executing database operations, the backend validates the request data to ensure it meets the required criteria.
+   - Error handling mechanisms are implemented to handle exceptions and provide appropriate responses in case of errors.
+
+### Response Flow
+
+1. **Database Response:**
+   - After performing CRUD operations, the backend receives responses from the database indicating the success or failure of the operation.
+
+2. **Response Formatting:**
+   - The backend formats the database responses into structured JSON objects to send back to the frontend.
+   - Responses include data payloads containing todos, success messages, error messages, or status codes.
+
+3. **Frontend Handling:**
+   - The frontend receives the HTTP response from the backend and processes the data accordingly.
+   - Depending on the response, the frontend updates the user interface to reflect the changes or displays error messages to the user.
+
+The following diagram illustrates the flow of data from the frontend -> backend -> DB and then back.
+
+![Screenshot 4](https://raw.githubusercontent.com/AlAswaad99/airmoya-todo-list/main/screenshots/Screenshot%202024-04-29%20163038.png)
+
+## Features
 Airmoya Todo List app comes with the following features:
 
 - **Adding Tasks:** Users can add new tasks with a title and description.
