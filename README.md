@@ -27,15 +27,23 @@ To get started with the Todo List app, follow these steps:
    `https://github.com/AlAswaad99/airmoya-todo-list.git `
    
 2.  Navigate to the project directory:
-       `cd airmoya-todo-list` 
+       `cd airmoya-todo-list`
+
+3. Follow this [this link](https://studio3t.com/knowledge-base/articles/connect-to-mongodb-atlas/) to setup a MongoDB Database and get a working DB connection string (Steps 1 and 2 from the link). Then in the `airmoya-todo-list` directory, create a file `.env.local` and paste the following code:
+
+   ```
+   MONGODB_URI=*****
+   
+   # replace ***** with the connection string from this step
+   ```
     
-3.  Install dependencies:
+5.  Install dependencies:
      `npm install`  or `yarn install` 
     
-4.  Start the development server:
+6.  Start the development server:
     `npm run dev` or `yarn run dev`
 
-5. Open your browser and visit `http://localhost:3000` to view the app.
+7. Open your browser and visit `http://localhost:3000` to view the app.
 
 
 
